@@ -1,9 +1,9 @@
 package repository
 
-import  ( 
+import (
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/juanmanuelromeraferrio/rest-api/config/database"
 	"github.com/juanmanuelromeraferrio/rest-api/model"
-    _ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 func GetPersonById(userId string) model.Person {
@@ -15,22 +15,22 @@ func GetPersonById(userId string) model.Person {
 	return person
 }
 
-func GetPeople() []model.Person  {
+func GetPeople() []model.Person {
 	var people []model.Person
 	if err := database.DB.Find(&people).Error; err != nil {
-    	panic(err)
+		panic(err)
 	}
 
 	for i, _ := range people {
-        database.DB.Model(people[i]).Related(&people[i].Address)
-    }
+		database.DB.Model(people[i]).Related(&people[i].Address)
+	}
 
 	return people
 }
 
-func CreatePerson(person model.Person) model.Person  {
+func CreatePerson(person model.Person) model.Person {
 	if err := database.DB.Create(&person).Error; err != nil {
-    	panic(err)
+		panic(err)
 	}
 	database.DB.Model(person).Related(&person.Address)
 	return person
@@ -39,10 +39,8 @@ func CreatePerson(person model.Person) model.Person  {
 func DeletePersonById(userId string) model.Person {
 	person := GetPersonById(userId)
 	if err := database.DB.Delete(&person).Error; err != nil {
-    	panic(err)
+		panic(err)
 	}
 	database.DB.Model(person).Related(&person.Address)
 	return person
 }
-
-

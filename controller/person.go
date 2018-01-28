@@ -1,18 +1,19 @@
 package controller
 
 import (
+	"encoding/json"
 	"net/http"
-    "encoding/json"
-    "github.com/gorilla/mux"
-    "github.com/juanmanuelromeraferrio/rest-api/model"
-    "github.com/juanmanuelromeraferrio/rest-api/repository"
+
+	"github.com/gorilla/mux"
+	"github.com/juanmanuelromeraferrio/rest-api/model"
+	"github.com/juanmanuelromeraferrio/rest-api/repository"
 )
 
 var people []string
 
 func GetPeople(w http.ResponseWriter, r *http.Request) {
 	people := repository.GetPeople()
-    json.NewEncoder(w).Encode(people)
+	json.NewEncoder(w).Encode(people)
 }
 
 func GetPerson(w http.ResponseWriter, r *http.Request) {
